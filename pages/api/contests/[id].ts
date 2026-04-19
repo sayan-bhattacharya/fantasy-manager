@@ -4,7 +4,10 @@ import { authOptions } from "#/pages/api/auth/[...nextauth]";
 import db from "#database";
 import { sql } from "kysely";
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
   const session = await getServerSession(req, res, authOptions);
   const contestId = parseInt(String(req.query.id));
 
@@ -39,7 +42,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       .execute()
       .catch(() => []);
 
-    return res.status(200).json({ contest, entries, entryCount: entries.length });
+    return res
+      .status(200)
+      .json({ contest, entries, entryCount: entries.length });
   }
 
   // POST /api/contests/[id] — enter a contest
@@ -58,7 +63,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       .executeTakeFirst()
       .catch(() => null);
 
-    if (existing) return res.status(409).json({ error: "Already entered this contest" });
+    if (existing)
+      return res.status(409).json({ error: "Already entered this contest" });
 
     // Check capacity
     if (contest.currentEntries >= contest.maxEntries) {

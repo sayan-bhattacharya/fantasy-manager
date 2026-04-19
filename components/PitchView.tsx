@@ -30,15 +30,19 @@ const FORMATION_ROWS: Record<string, number[]> = {
 };
 
 const POS_LABELS: Record<string, string> = {
-  goalkeeper: "GK", defender: "DEF", midfielder: "MID", forward: "FWD", unknown: "?",
+  goalkeeper: "GK",
+  defender: "DEF",
+  midfielder: "MID",
+  forward: "FWD",
+  unknown: "?",
 };
 
 const POS_COLORS: Record<string, { bg: string; border: string }> = {
-  goalkeeper: { bg: "rgba(251,191,36,0.2)",  border: "#FBBF24" },
-  defender:   { bg: "rgba(59,130,246,0.2)",  border: "#3B82F6" },
-  midfielder: { bg: "rgba(168,85,247,0.2)",  border: "#A855F7" },
-  forward:    { bg: "rgba(239,68,68,0.2)",   border: "#EF4444" },
-  unknown:    { bg: "rgba(156,163,175,0.2)", border: "#9CA3AF" },
+  goalkeeper: { bg: "rgba(251,191,36,0.2)", border: "#FBBF24" },
+  defender: { bg: "rgba(59,130,246,0.2)", border: "#3B82F6" },
+  midfielder: { bg: "rgba(168,85,247,0.2)", border: "#A855F7" },
+  forward: { bg: "rgba(239,68,68,0.2)", border: "#EF4444" },
+  unknown: { bg: "rgba(156,163,175,0.2)", border: "#9CA3AF" },
 };
 
 function PlayerSlot({
@@ -72,7 +76,11 @@ function PlayerSlot({
         </div>
         <span
           className="text-xs font-bold px-1.5 py-0.5 rounded"
-          style={{ background: "rgba(0,0,0,0.6)", color: "rgba(255,255,255,0.5)", fontSize: "0.55rem" }}
+          style={{
+            background: "rgba(0,0,0,0.6)",
+            color: "rgba(255,255,255,0.5)",
+            fontSize: "0.55rem",
+          }}
         >
           EMPTY
         </span>
@@ -92,9 +100,11 @@ function PlayerSlot({
     >
       <div
         style={{
-          transform:  hovered ? "scale(1.18)" : "scale(1)",
+          transform: hovered ? "scale(1.18)" : "scale(1)",
           transition: "transform 0.25s cubic-bezier(0.34,1.56,0.64,1)",
-          filter:     hovered ? `drop-shadow(0 0 10px ${posStyle.border}90)` : "none",
+          filter: hovered
+            ? `drop-shadow(0 0 10px ${posStyle.border}90)`
+            : "none",
         }}
       >
         <PlayerAvatar
@@ -107,9 +117,7 @@ function PlayerSlot({
           starred={player.starred}
         />
       </div>
-      <div className="pitch-player-name">
-        {player.name.split(" ").pop()}
-      </div>
+      <div className="pitch-player-name">{player.name.split(" ").pop()}</div>
       {player.totalPoints !== undefined && (
         <div className="pitch-player-pts">{player.totalPoints}pts</div>
       )}
@@ -117,16 +125,24 @@ function PlayerSlot({
   );
 }
 
-export default function PitchView({ players, formation = "4-3-3", onPlayerClick, readOnly = false }: PitchViewProps) {
+export default function PitchView({
+  players,
+  formation = "4-3-3",
+  onPlayerClick,
+  readOnly = false,
+}: PitchViewProps) {
   const rows = FORMATION_ROWS[formation] ?? FORMATION_ROWS["4-3-3"];
 
   // Distribute players by position rows (GK → DEF → MID → FWD)
   const byPos: PitchPlayer[][] = rows.map(() => []);
-  const gks    = players.filter((p) => p.position === "goalkeeper");
-  const defs   = players.filter((p) => p.position === "defender");
-  const mids   = players.filter((p) => p.position === "midfielder");
-  const fwds   = players.filter((p) => p.position === "forward");
-  const others = players.filter((p) => !["goalkeeper","defender","midfielder","forward"].includes(p.position));
+  const gks = players.filter((p) => p.position === "goalkeeper");
+  const defs = players.filter((p) => p.position === "defender");
+  const mids = players.filter((p) => p.position === "midfielder");
+  const fwds = players.filter((p) => p.position === "forward");
+  const others = players.filter(
+    (p) =>
+      !["goalkeeper", "defender", "midfielder", "forward"].includes(p.position),
+  );
 
   // Fill rows in order
   const posGroups = [gks, defs, mids, fwds];
@@ -187,7 +203,9 @@ export default function PitchView({ players, formation = "4-3-3", onPlayerClick,
                 key={slotIdx}
                 player={p}
                 empty={!p}
-                onClick={p && onPlayerClick ? () => onPlayerClick(p) : undefined}
+                onClick={
+                  p && onPlayerClick ? () => onPlayerClick(p) : undefined
+                }
                 readOnly={readOnly}
               />
             );
@@ -198,7 +216,10 @@ export default function PitchView({ players, formation = "4-3-3", onPlayerClick,
       {/* Formation badge */}
       <div
         className="absolute bottom-3 right-3 text-xs font-black px-2 py-1 rounded-lg"
-        style={{ background: "rgba(0,0,0,0.7)", color: "rgba(255,255,255,0.5)" }}
+        style={{
+          background: "rgba(0,0,0,0.7)",
+          color: "rgba(255,255,255,0.5)",
+        }}
       >
         {formation}
       </div>

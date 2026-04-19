@@ -4,21 +4,24 @@
 
 /* ─── CSS Custom Properties ──────────────────────────────── */
 :root {
-  --neon:        #00FF87;
-  --neon-dim:    rgba(0, 255, 135, 0.15);
-  --neon-glow:   0 0 20px rgba(0, 255, 135, 0.4), 0 0 60px rgba(0, 255, 135, 0.15);
-  --bg:          #050505;
-  --bg-card:     #0f0f0f;
-  --bg-card2:    #161616;
-  --border:      rgba(255, 255, 255, 0.06);
+  --neon: #00ff87;
+  --neon-dim: rgba(0, 255, 135, 0.15);
+  --neon-glow:
+    0 0 20px rgba(0, 255, 135, 0.4), 0 0 60px rgba(0, 255, 135, 0.15);
+  --bg: #050505;
+  --bg-card: #0f0f0f;
+  --bg-card2: #161616;
+  --border: rgba(255, 255, 255, 0.06);
   --border-neon: rgba(0, 255, 135, 0.25);
   --radius-card: 1.5rem;
-  --spring:      cubic-bezier(0.32, 0.72, 0, 1);
+  --spring: cubic-bezier(0.32, 0.72, 0, 1);
   --spring-back: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 /* ─── Base Reset ─────────────────────────────────────────── */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
@@ -62,7 +65,7 @@ body::before {
 .display-lg {
   font-size: clamp(2rem, 5vw, 4.5rem);
   font-weight: 800;
-  line-height: 1.0;
+  line-height: 1;
   letter-spacing: -0.025em;
 }
 .display-md {
@@ -93,7 +96,9 @@ body::before {
   border: 1px solid var(--border);
   border-radius: calc(var(--radius-card) + 0.375rem);
   padding: 0.375rem;
-  transition: box-shadow 0.5s var(--spring), border-color 0.5s var(--spring);
+  transition:
+    box-shadow 0.5s var(--spring),
+    border-color 0.5s var(--spring);
   will-change: transform;
 }
 .card-outer:hover {
@@ -123,7 +128,9 @@ body::before {
   cursor: pointer;
   position: relative;
   overflow: hidden;
-  transition: transform 0.3s var(--spring), box-shadow 0.3s var(--spring);
+  transition:
+    transform 0.3s var(--spring),
+    box-shadow 0.3s var(--spring);
   will-change: transform;
 }
 .btn-neon:hover {
@@ -201,7 +208,8 @@ body::before {
 
 /* ─── Football Pitch ─────────────────────────────────────── */
 .pitch-bg {
-  background: linear-gradient(180deg,
+  background: linear-gradient(
+    180deg,
     #1a5c1a 0%,
     #1d6b1d 12.5%,
     #1a5c1a 12.5%,
@@ -299,23 +307,42 @@ body::before {
   font-size: 2rem;
   line-height: 1;
 }
-.badge-rarity-legendary { border-color: #FFD700; box-shadow: 0 0 12px rgba(255,215,0,0.3); }
-.badge-rarity-epic      { border-color: #9b59b6; box-shadow: 0 0 12px rgba(155,89,182,0.3); }
-.badge-rarity-rare      { border-color: #3498db; box-shadow: 0 0 12px rgba(52,152,219,0.3); }
-.badge-rarity-common    { border-color: var(--border); }
+.badge-rarity-legendary {
+  border-color: #ffd700;
+  box-shadow: 0 0 12px rgba(255, 215, 0, 0.3);
+}
+.badge-rarity-epic {
+  border-color: #9b59b6;
+  box-shadow: 0 0 12px rgba(155, 89, 182, 0.3);
+}
+.badge-rarity-rare {
+  border-color: #3498db;
+  box-shadow: 0 0 12px rgba(52, 152, 219, 0.3);
+}
+.badge-rarity-common {
+  border-color: var(--border);
+}
 
 /* ─── Contest Card Type Accents ──────────────────────────── */
-.contest-mega   { border-left: 3px solid #FFD700; }
-.contest-free   { border-left: 3px solid var(--neon); }
-.contest-public { border-left: 3px solid #3498db; }
-.contest-private{ border-left: 3px solid #9b59b6; }
+.contest-mega {
+  border-left: 3px solid #ffd700;
+}
+.contest-free {
+  border-left: 3px solid var(--neon);
+}
+.contest-public {
+  border-left: 3px solid #3498db;
+}
+.contest-private {
+  border-left: 3px solid #9b59b6;
+}
 
 /* ─── Wallet Balance ─────────────────────────────────────── */
 .wallet-balance {
   font-size: clamp(2.5rem, 6vw, 4rem);
   font-weight: 800;
   font-variant-numeric: tabular-nums;
-  background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.6) 100%);
+  background: linear-gradient(135deg, #fff 0%, rgba(255, 255, 255, 0.6) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -336,14 +363,27 @@ body::before {
   transform: translateY(0);
   filter: blur(0);
 }
-.reveal-delay-1 { transition-delay: 0.1s; }
-.reveal-delay-2 { transition-delay: 0.2s; }
-.reveal-delay-3 { transition-delay: 0.3s; }
-.reveal-delay-4 { transition-delay: 0.4s; }
+.reveal-delay-1 {
+  transition-delay: 0.1s;
+}
+.reveal-delay-2 {
+  transition-delay: 0.2s;
+}
+.reveal-delay-3 {
+  transition-delay: 0.3s;
+}
+.reveal-delay-4 {
+  transition-delay: 0.4s;
+}
 
 /* ─── Shimmer Skeleton ───────────────────────────────────── */
 .skeleton {
-  background: linear-gradient(90deg, var(--bg-card) 25%, var(--bg-card2) 50%, var(--bg-card) 75%);
+  background: linear-gradient(
+    90deg,
+    var(--bg-card) 25%,
+    var(--bg-card2) 50%,
+    var(--bg-card) 75%
+  );
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
   border-radius: 0.5rem;
@@ -377,7 +417,17 @@ body::before {
 }
 
 /* ─── Scrollbar ──────────────────────────────────────────── */
-::-webkit-scrollbar { width: 4px; height: 4px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 9999px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(0,255,135,0.4); }
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 255, 135, 0.4);
+}

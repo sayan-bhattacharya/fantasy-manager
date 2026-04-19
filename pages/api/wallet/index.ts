@@ -35,7 +35,10 @@ async function ensureWallet(userId: number) {
   return wallet;
 }
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
   const session = await getServerSession(req, res, authOptions);
   if (!session) return res.status(401).json({ error: "Not authenticated" });
 
@@ -73,10 +76,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       await db
         .insertInto("transactions")
-        .values({ userId, amount: numAmount, type: "deposit", description: "Deposit" })
+        .values({
+          userId,
+          amount: numAmount,
+          type: "deposit",
+          description: "Deposit",
+        })
         .execute();
 
-      return res.status(200).json({ success: true, balance: wallet.balance + numAmount });
+      return res
+        .status(200)
+        .json({ success: true, balance: wallet.balance + numAmount });
     }
 
     if (action === "withdraw") {
@@ -91,10 +101,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       await db
         .insertInto("transactions")
-        .values({ userId, amount: -numAmount, type: "withdrawal", description: "Withdrawal" })
+        .values({
+          userId,
+          amount: -numAmount,
+          type: "withdrawal",
+          description: "Withdrawal",
+        })
         .execute();
 
-      return res.status(200).json({ success: true, balance: wallet.balance - numAmount });
+      return res
+        .status(200)
+        .json({ success: true, balance: wallet.balance - numAmount });
     }
 
     return res.status(400).json({ error: "Unknown action" });

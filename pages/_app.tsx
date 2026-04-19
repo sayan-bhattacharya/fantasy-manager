@@ -219,7 +219,9 @@ function MyApp({ Component, pageProps }: AppProps) {
     }
   }
   // Defaults to dark if this is not supported by the browser
-  const prefersDark = !useMediaQuery("(prefers-color-scheme: light)", { noSsr: true });
+  const prefersDark = !useMediaQuery("(prefers-color-scheme: light)", {
+    noSsr: true,
+  });
   // Sets the color scheme based on preferences)
   useEffect(() => {
     const session_exists = !!session; // Checks if a session to read data from exists

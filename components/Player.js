@@ -100,7 +100,14 @@ function InternalPlayer({ data, children, starred, extraText, condensed }) {
           height="100"
         />
         <div style={{ width: "70%" }}>
-          <p style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap" }}>
+          <p
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+              flexWrap: "wrap",
+            }}
+          >
             <PlayerAvatar
               name={data.name}
               uid={data.uid}

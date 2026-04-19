@@ -5,31 +5,47 @@ export async function up(db: Kysely<unknown>): Promise<void> {
   // --- Wallet ---
   await db.schema
     .createTable("wallet")
-    .addColumn("id", "integer", (col) => col.primaryKey().autoIncrement().notNull())
-    .addColumn("userId", "integer", (col) => col.notNull().references("users.id").onDelete("cascade"))
+    .addColumn("id", "integer", (col) =>
+      col.primaryKey().autoIncrement().notNull(),
+    )
+    .addColumn("userId", "integer", (col) =>
+      col.notNull().references("users.id").onDelete("cascade"),
+    )
     .addColumn("balance", "real", (col) => col.defaultTo(10000).notNull())
     .addColumn("currency", "varchar", (col) => col.defaultTo("FC").notNull())
-    .addColumn("updatedAt", "integer", (col) => col.defaultTo(sql`(strftime('%s','now'))`).notNull())
+    .addColumn("updatedAt", "integer", (col) =>
+      col.defaultTo(sql`(strftime('%s','now'))`).notNull(),
+    )
     .execute();
 
-  await sql`CREATE UNIQUE INDEX IF NOT EXISTS wallet_userId ON wallet(userId)`.execute(db);
+  await sql`CREATE UNIQUE INDEX IF NOT EXISTS wallet_userId ON wallet(userId)`.execute(
+    db,
+  );
 
   // --- Transactions ---
   await db.schema
     .createTable("transactions")
-    .addColumn("id", "integer", (col) => col.primaryKey().autoIncrement().notNull())
-    .addColumn("userId", "integer", (col) => col.notNull().references("users.id").onDelete("cascade"))
+    .addColumn("id", "integer", (col) =>
+      col.primaryKey().autoIncrement().notNull(),
+    )
+    .addColumn("userId", "integer", (col) =>
+      col.notNull().references("users.id").onDelete("cascade"),
+    )
     .addColumn("amount", "real", (col) => col.notNull())
     .addColumn("type", "varchar", (col) => col.notNull()) // 'deposit','withdrawal','contest_entry','contest_win','bonus'
     .addColumn("description", "varchar", (col) => col.defaultTo("").notNull())
     .addColumn("relatedId", "integer") // contest id or null
-    .addColumn("createdAt", "integer", (col) => col.defaultTo(sql`(strftime('%s','now'))`).notNull())
+    .addColumn("createdAt", "integer", (col) =>
+      col.defaultTo(sql`(strftime('%s','now'))`).notNull(),
+    )
     .execute();
 
   // --- Contests ---
   await db.schema
     .createTable("contests")
-    .addColumn("id", "integer", (col) => col.primaryKey().autoIncrement().notNull())
+    .addColumn("id", "integer", (col) =>
+      col.primaryKey().autoIncrement().notNull(),
+    )
     .addColumn("name", "varchar", (col) => col.notNull())
     .addColumn("description", "varchar", (col) => col.defaultTo("").notNull())
     .addColumn("type", "varchar", (col) => col.defaultTo("public").notNull()) // 'public','private','free','mega'
@@ -44,44 +60,68 @@ export async function up(db: Kysely<unknown>): Promise<void> {
     .addColumn("inviteCode", "varchar")
     .addColumn("startTime", "integer")
     .addColumn("endTime", "integer")
-    .addColumn("createdAt", "integer", (col) => col.defaultTo(sql`(strftime('%s','now'))`).notNull())
+    .addColumn("createdAt", "integer", (col) =>
+      col.defaultTo(sql`(strftime('%s','now'))`).notNull(),
+    )
     .execute();
 
   // --- Contest Entries ---
   await db.schema
     .createTable("contestEntries")
-    .addColumn("id", "integer", (col) => col.primaryKey().autoIncrement().notNull())
-    .addColumn("contestId", "integer", (col) => col.notNull().references("contests.id").onDelete("cascade"))
-    .addColumn("userId", "integer", (col) => col.notNull().references("users.id").onDelete("cascade"))
-    .addColumn("teamName", "varchar", (col) => col.defaultTo("My Team").notNull())
+    .addColumn("id", "integer", (col) =>
+      col.primaryKey().autoIncrement().notNull(),
+    )
+    .addColumn("contestId", "integer", (col) =>
+      col.notNull().references("contests.id").onDelete("cascade"),
+    )
+    .addColumn("userId", "integer", (col) =>
+      col.notNull().references("users.id").onDelete("cascade"),
+    )
+    .addColumn("teamName", "varchar", (col) =>
+      col.defaultTo("My Team").notNull(),
+    )
     .addColumn("score", "real", (col) => col.defaultTo(0).notNull())
     .addColumn("rank", "integer")
     .addColumn("prizeWon", "real", (col) => col.defaultTo(0).notNull())
-    .addColumn("enteredAt", "integer", (col) => col.defaultTo(sql`(strftime('%s','now'))`).notNull())
+    .addColumn("enteredAt", "integer", (col) =>
+      col.defaultTo(sql`(strftime('%s','now'))`).notNull(),
+    )
     .execute();
 
-  await sql`CREATE UNIQUE INDEX IF NOT EXISTS contestEntries_unique ON contestEntries(contestId, userId)`.execute(db);
+  await sql`CREATE UNIQUE INDEX IF NOT EXISTS contestEntries_unique ON contestEntries(contestId, userId)`.execute(
+    db,
+  );
 
   // --- Achievements ---
   await db.schema
     .createTable("achievements")
-    .addColumn("id", "integer", (col) => col.primaryKey().autoIncrement().notNull())
-    .addColumn("userId", "integer", (col) => col.notNull().references("users.id").onDelete("cascade"))
+    .addColumn("id", "integer", (col) =>
+      col.primaryKey().autoIncrement().notNull(),
+    )
+    .addColumn("userId", "integer", (col) =>
+      col.notNull().references("users.id").onDelete("cascade"),
+    )
     .addColumn("type", "varchar", (col) => col.notNull()) // 'first_league','first_win','streak_7','top_scorer',etc.
     .addColumn("title", "varchar", (col) => col.notNull())
     .addColumn("description", "varchar", (col) => col.defaultTo("").notNull())
     .addColumn("icon", "varchar", (col) => col.defaultTo("🏆").notNull())
     .addColumn("rarity", "varchar", (col) => col.defaultTo("common").notNull()) // 'common','rare','epic','legendary'
-    .addColumn("earnedAt", "integer", (col) => col.defaultTo(sql`(strftime('%s','now'))`).notNull())
+    .addColumn("earnedAt", "integer", (col) =>
+      col.defaultTo(sql`(strftime('%s','now'))`).notNull(),
+    )
     .execute();
 
   // --- User Streaks ---
   await db.schema
     .createTable("userStreaks")
-    .addColumn("userId", "integer", (col) => col.primaryKey().notNull().references("users.id").onDelete("cascade"))
+    .addColumn("userId", "integer", (col) =>
+      col.primaryKey().notNull().references("users.id").onDelete("cascade"),
+    )
     .addColumn("currentStreak", "integer", (col) => col.defaultTo(0).notNull())
     .addColumn("longestStreak", "integer", (col) => col.defaultTo(0).notNull())
-    .addColumn("lastActiveDate", "varchar", (col) => col.defaultTo("").notNull())
+    .addColumn("lastActiveDate", "varchar", (col) =>
+      col.defaultTo("").notNull(),
+    )
     .addColumn("totalLogins", "integer", (col) => col.defaultTo(0).notNull())
     .execute();
 

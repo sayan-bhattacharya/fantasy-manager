@@ -4,7 +4,10 @@ import { authOptions } from "#/pages/api/auth/[...nextauth]";
 import db from "#database";
 import { sql } from "kysely";
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
   const session = await getServerSession(req, res, authOptions);
 
   if (req.method === "GET") {
@@ -38,12 +41,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (req.method === "POST") {
     if (!session) return res.status(401).json({ error: "Not authenticated" });
 
-    const { name, description, type, leagueType, entryFee, maxEntries } = req.body;
+    const { name, description, type, leagueType, entryFee, maxEntries } =
+      req.body;
     if (!name) return res.status(400).json({ error: "Name required" });
 
-    const inviteCode = type === "private"
-      ? Math.random().toString(36).substring(2, 10).toUpperCase()
-      : null;
+    const inviteCode =
+      type === "private"
+        ? Math.random().toString(36).substring(2, 10).toUpperCase()
+        : null;
 
     const contest = await db
       .insertInto("contests")
@@ -64,7 +69,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       .executeTakeFirst()
       .catch(() => null);
 
-    if (!contest) return res.status(500).json({ error: "Failed to create contest" });
+    if (!contest)
+      return res.status(500).json({ error: "Failed to create contest" });
     return res.status(201).json(contest);
   }
 

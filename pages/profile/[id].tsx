@@ -16,16 +16,16 @@ interface Achievement {
 
 const RARITY_COLORS: Record<string, string> = {
   legendary: "#FFD700",
-  epic:      "#9b59b6",
-  rare:      "#3498db",
-  common:    "rgba(255,255,255,0.2)",
+  epic: "#9b59b6",
+  rare: "#3498db",
+  common: "rgba(255,255,255,0.2)",
 };
 
 const RARITY_BG: Record<string, string> = {
   legendary: "rgba(255,215,0,0.08)",
-  epic:      "rgba(155,89,182,0.08)",
-  rare:      "rgba(52,152,219,0.08)",
-  common:    "rgba(255,255,255,0.03)",
+  epic: "rgba(155,89,182,0.08)",
+  rare: "rgba(52,152,219,0.08)",
+  common: "rgba(255,255,255,0.03)",
 };
 
 export default function ProfilePage() {
@@ -39,8 +39,12 @@ export default function ProfilePage() {
   useEffect(() => {
     if (!id) return;
     Promise.all([
-      fetch(`/api/user/${id}`).then((r) => r.json()).catch(() => "Player"),
-      fetch(`/api/achievements?userId=${id}`).then((r) => r.json()).catch(() => ({ progress: [] })),
+      fetch(`/api/user/${id}`)
+        .then((r) => r.json())
+        .catch(() => "Player"),
+      fetch(`/api/achievements?userId=${id}`)
+        .then((r) => r.json())
+        .catch(() => ({ progress: [] })),
     ]).then(([name, achData]) => {
       setUsername(typeof name === "string" ? name : "Player");
       setAchievements(achData.progress ?? []);
@@ -53,12 +57,16 @@ export default function ProfilePage() {
 
   const RARITY_ORDER = ["legendary", "epic", "rare", "common"];
   const sorted = [...displayed].sort(
-    (a, b) => RARITY_ORDER.indexOf(a.rarity) - RARITY_ORDER.indexOf(b.rarity)
+    (a, b) => RARITY_ORDER.indexOf(a.rarity) - RARITY_ORDER.indexOf(b.rarity),
   );
 
   return (
     <>
-      <Head><title>{username ? `${username} — Profile` : "Profile"} — FantasyKick</title></Head>
+      <Head>
+        <title>
+          {username ? `${username} — Profile` : "Profile"} — FantasyKick
+        </title>
+      </Head>
       <Menu />
 
       <main className="main-content" style={{ background: "var(--bg)" }}>
@@ -66,7 +74,8 @@ export default function ProfilePage() {
         <div
           className="py-20 px-4"
           style={{
-            background: "radial-gradient(ellipse 80% 60% at 50% 0%, rgba(0,255,135,0.07) 0%, transparent 70%)",
+            background:
+              "radial-gradient(ellipse 80% 60% at 50% 0%, rgba(0,255,135,0.07) 0%, transparent 70%)",
             borderBottom: "1px solid var(--border)",
           }}
         >
@@ -84,7 +93,10 @@ export default function ProfilePage() {
             <div>
               <span className="eyebrow mb-2">Manager Profile</span>
               <h1 className="display-md mt-2">{username || "Loading..."}</h1>
-              <p className="text-sm mt-1" style={{ color: "rgba(255,255,255,0.4)" }}>
+              <p
+                className="text-sm mt-1"
+                style={{ color: "rgba(255,255,255,0.4)" }}
+              >
                 {unlocked.length} / {achievements.length} achievements unlocked
               </p>
             </div>
@@ -97,15 +109,38 @@ export default function ProfilePage() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
               {[
                 { label: "Total Badges", value: unlocked.length, icon: "🏅" },
-                { label: "Legendary", value: unlocked.filter((a) => a.rarity === "legendary").length, icon: "👑" },
-                { label: "Epic", value: unlocked.filter((a) => a.rarity === "epic").length, icon: "💎" },
-                { label: "Rare", value: unlocked.filter((a) => a.rarity === "rare").length, icon: "⭐" },
+                {
+                  label: "Legendary",
+                  value: unlocked.filter((a) => a.rarity === "legendary")
+                    .length,
+                  icon: "👑",
+                },
+                {
+                  label: "Epic",
+                  value: unlocked.filter((a) => a.rarity === "epic").length,
+                  icon: "💎",
+                },
+                {
+                  label: "Rare",
+                  value: unlocked.filter((a) => a.rarity === "rare").length,
+                  icon: "⭐",
+                },
               ].map((s) => (
                 <div key={s.label} className="card-outer">
                   <div className="card-inner p-5 text-center">
                     <div className="text-2xl mb-2">{s.icon}</div>
-                    <div className="text-2xl font-black mb-1" style={{ color: "var(--neon)" }}>{s.value}</div>
-                    <div className="text-xs" style={{ color: "rgba(255,255,255,0.35)" }}>{s.label}</div>
+                    <div
+                      className="text-2xl font-black mb-1"
+                      style={{ color: "var(--neon)" }}
+                    >
+                      {s.value}
+                    </div>
+                    <div
+                      className="text-xs"
+                      style={{ color: "rgba(255,255,255,0.35)" }}
+                    >
+                      {s.label}
+                    </div>
                   </div>
                 </div>
               ))}
@@ -120,14 +155,18 @@ export default function ProfilePage() {
                 onClick={() => setTab(t)}
                 className="px-5 py-2 rounded-full text-sm font-semibold capitalize transition-all duration-300"
                 style={{
-                  background: tab === t ? "var(--neon)" : "rgba(255,255,255,0.05)",
+                  background:
+                    tab === t ? "var(--neon)" : "rgba(255,255,255,0.05)",
                   color: tab === t ? "#000" : "rgba(255,255,255,0.6)",
                   border: "1px solid",
-                  borderColor: tab === t ? "var(--neon)" : "rgba(255,255,255,0.08)",
+                  borderColor:
+                    tab === t ? "var(--neon)" : "rgba(255,255,255,0.08)",
                   transitionTimingFunction: "var(--spring)",
                 }}
               >
-                {t === "all" ? `All (${achievements.length})` : `Unlocked (${unlocked.length})`}
+                {t === "all"
+                  ? `All (${achievements.length})`
+                  : `Unlocked (${unlocked.length})`}
               </button>
             ))}
           </div>
@@ -136,7 +175,11 @@ export default function ProfilePage() {
           {loading ? (
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {[...Array(8)].map((_, i) => (
-                <div key={i} className="skeleton" style={{ height: "140px", borderRadius: "1rem" }} />
+                <div
+                  key={i}
+                  className="skeleton"
+                  style={{ height: "140px", borderRadius: "1rem" }}
+                />
               ))}
             </div>
           ) : (
@@ -146,8 +189,12 @@ export default function ProfilePage() {
                   key={ach.type}
                   className="badge"
                   style={{
-                    background: ach.unlocked ? RARITY_BG[ach.rarity] : "rgba(255,255,255,0.02)",
-                    borderColor: ach.unlocked ? RARITY_COLORS[ach.rarity] : "rgba(255,255,255,0.06)",
+                    background: ach.unlocked
+                      ? RARITY_BG[ach.rarity]
+                      : "rgba(255,255,255,0.02)",
+                    borderColor: ach.unlocked
+                      ? RARITY_COLORS[ach.rarity]
+                      : "rgba(255,255,255,0.06)",
                     opacity: ach.unlocked ? 1 : 0.4,
                     filter: ach.unlocked ? "none" : "grayscale(1)",
                     position: "relative",
@@ -157,14 +204,22 @@ export default function ProfilePage() {
                   {ach.unlocked && (
                     <div
                       className="absolute top-2 right-2 w-4 h-4 rounded-full text-xs flex items-center justify-center"
-                      style={{ background: RARITY_COLORS[ach.rarity] + "30", color: RARITY_COLORS[ach.rarity] }}
+                      style={{
+                        background: RARITY_COLORS[ach.rarity] + "30",
+                        color: RARITY_COLORS[ach.rarity],
+                      }}
                     >
                       ✓
                     </div>
                   )}
                   <div className="badge-icon">{ach.icon}</div>
-                  <div className="text-sm font-bold text-center">{ach.title}</div>
-                  <div className="text-xs text-center leading-tight" style={{ color: "rgba(255,255,255,0.4)" }}>
+                  <div className="text-sm font-bold text-center">
+                    {ach.title}
+                  </div>
+                  <div
+                    className="text-xs text-center leading-tight"
+                    style={{ color: "rgba(255,255,255,0.4)" }}
+                  >
                     {ach.description}
                   </div>
                   {ach.unlocked && (

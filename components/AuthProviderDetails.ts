@@ -6,13 +6,23 @@ export interface ProviderData {
   logoDark: string;
 }
 
-export function getProviderDetails(enabledProviders: Providers[]): ProviderData[] {
+export function getProviderDetails(
+  enabledProviders: Providers[],
+): ProviderData[] {
   const providers: ProviderData[] = [];
   if (enabledProviders.includes("google")) {
-    providers.push({ name: "google", logo: "/providers/google.svg", logoDark: "/providers/google.svg" });
+    providers.push({
+      name: "google",
+      logo: "/providers/google.svg",
+      logoDark: "/providers/google.svg",
+    });
   }
   if (enabledProviders.includes("github")) {
-    providers.push({ name: "github", logo: "/providers/github-dark.svg", logoDark: "/providers/github-light.svg" });
+    providers.push({
+      name: "github",
+      logo: "/providers/github-dark.svg",
+      logoDark: "/providers/github-light.svg",
+    });
   }
   return providers;
 }

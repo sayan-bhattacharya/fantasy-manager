@@ -27,7 +27,10 @@ function MenuItems({ pages, handleCloseNavMenu }: MenuItemsInterface) {
       {pages.map((page) => (
         <Link styled={false} href={page.link} key={page.name}>
           <MenuItem onClick={handleCloseNavMenu}>
-            <Typography textAlign="center" sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            <Typography
+              textAlign="center"
+              sx={{ display: "flex", alignItems: "center", gap: 1 }}
+            >
               {page.name}
               {page.badge && (
                 <Chip
@@ -66,7 +69,9 @@ const Layout = ({ league }: MainInterface) => {
 
   const { data: session } = useSession();
   if (!league && session) {
-    league = session.user.favoriteLeague ? session.user.favoriteLeague : undefined;
+    league = session.user.favoriteLeague
+      ? session.user.favoriteLeague
+      : undefined;
   }
   const t = useContext(TranslateContext);
 
@@ -87,7 +92,10 @@ const Layout = ({ league }: MainInterface) => {
 
   if (league) {
     pages.push({ name: t("Standings"), link: `/${league}` });
-    pages.push({ name: t("Predictions"), link: `/${league}/${session?.user.id}/predictions` });
+    pages.push({
+      name: t("Predictions"),
+      link: `/${league}/${session?.user.id}/predictions`,
+    });
     pages.push({ name: t("Squad"), link: `/${league}/squad` });
     pages.push({ name: t("Transfers"), link: `/${league}/transfer` });
   }

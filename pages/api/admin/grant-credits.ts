@@ -2,7 +2,10 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import db from "#database";
 
 // One-time admin endpoint — protected by secret token
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
   if (req.method !== "POST") return res.status(405).end();
 
   const { token, username, balance } = req.body;
@@ -54,5 +57,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     .execute()
     .catch(() => null);
 
-  return res.status(200).json({ success: true, userId: user.id, username: user.username, balance: targetBalance });
+  return res
+    .status(200)
+    .json({
+      success: true,
+      userId: user.id,
+      username: user.username,
+      balance: targetBalance,
+    });
 }

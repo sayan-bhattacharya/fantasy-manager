@@ -97,9 +97,7 @@ async function scrape(): Promise<void> {
   await db
     .insertInto("data")
     .values({ value1: "configDownloadPicture", value2: "no" })
-    .onConflict((oc) =>
-      oc.column("value1").doUpdateSet({ value2: "no" }),
-    )
+    .onConflict((oc) => oc.column("value1").doUpdateSet({ value2: "no" }))
     .execute();
 
   // ── 2. Build a lookup: FPL team id → short_name ───────────────────────────
@@ -166,7 +164,13 @@ async function scrape(): Promise<void> {
     if (!pictureRecord) {
       await db
         .insertInto("pictures")
-        .values({ url: aiUrl, height: 140, width: 110, downloaded: 0, downloading: 0 })
+        .values({
+          url: aiUrl,
+          height: 140,
+          width: 110,
+          downloaded: 0,
+          downloading: 0,
+        })
         .execute();
       pictureRecord = await db
         .selectFrom("pictures")
