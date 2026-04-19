@@ -1,8 +1,6 @@
-name: Build
+name: Build (PR check)
 
 on:
-  push:
-    branches: [main]
   pull_request:
     branches: [main]
 
@@ -14,20 +12,16 @@ jobs:
       SQLITE: test.db
     steps:
       - uses: actions/checkout@v4
+
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 24.x
-          cache: "npm"
-      # Installs packages
+          cache: npm
+
       - run: npm ci
-      # Makes sure the code is formatted correctly
       - run: npm run pretty
-      # Runs tests
       - run: npm run test:cli
-      # Runs eslint
       - run: npm run lint
-      # Builds the project
       - run: npm run build
-      # Checks the db types
       - run: npm run dbtypes:check

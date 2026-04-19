@@ -1,16 +1,51 @@
-name: Release → Azure (versioned)
+name: CI / Deploy → Azure (main)
 
 on:
-  release:
-    types: [published]
+  push:
+    branches: [main]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
+  # ── 1. Tests ──────────────────────────────────────────────────────────────
+  test:
+    name: Test & Lint
+    runs-on: ubuntu-latest
+    env:
+      NODE_ENV: test
+      SQLITE: test.db
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.x
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Format check
+        run: npm run pretty
+
+      - name: Unit tests
+        run: npm run test:cli
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Build (test)
+        run: npm run build
+
+      - name: DB types check
+        run: npm run dbtypes:check
+
+  # ── 2. Build & Deploy ─────────────────────────────────────────────────────
   deploy:
-    name: Build & Deploy ${{ github.event.release.tag_name }}
+    name: Build & Deploy
+    needs: test
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -73,15 +108,7 @@ jobs:
             --type zip \
             --timeout 600
 
-      - name: Tag deployment in App Service
-        run: |
-          az webapp config appsettings set \
-            --resource-group rg-fantasy-manager \
-            --name fantasy-manager-app \
-            --settings DEPLOYED_VERSION="${{ github.event.release.tag_name }}" \
-            -o none
-
       - name: Verify deployment
         run: |
-          echo "Release ${{ github.event.release.tag_name }} deployed to:"
+          echo "Deployed commit ${{ github.sha }} to:"
           echo "https://fantasy-manager-app.azurewebsites.net"
