@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useSession } from "next-auth/react";
 import fallbackImg from "../public/playerFallback.png";
 import Link from "./Link";
+import PlayerAvatar from "./PlayerAvatar";
 import {
   Box,
   Button,
@@ -99,15 +100,19 @@ function InternalPlayer({ data, children, starred, extraText, condensed }) {
           height="100"
         />
         <div style={{ width: "70%" }}>
-          <p>
+          <p style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap" }}>
+            <PlayerAvatar
+              name={data.name}
+              uid={data.uid}
+              pictureID={data.pictureID}
+              downloaded={data.downloaded}
+              position={data.position}
+              size="xs"
+              starred={starred}
+            />
             <Link styled={false} href={`/player/${data.league}/${data.uid}`}>
               {data.name}
             </Link>
-            {starred ? (
-              <Image alt="starred" src="/star.svg" width="20" height="20" />
-            ) : (
-              ""
-            )}
             {extraText && <i> {extraText}</i>}
             {data.updateRunning === false && (
               <Link color={"#ff0000"} href="/error/no-update">

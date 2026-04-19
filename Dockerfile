@@ -6,7 +6,7 @@ RUN mkdir app
 WORKDIR /app
 COPY package-lock.json package-lock.json
 COPY package.json package.json
-RUN npm ci
+RUN npm ci --include=dev
 COPY components components
 COPY Modules Modules
 COPY pages pages
@@ -20,6 +20,8 @@ COPY tsconfig.json tsconfig.json
 COPY tsconfig2.json tsconfig2.json
 COPY types types
 COPY locales locales
+COPY tailwind.config.js tailwind.config.js
+COPY postcss.config.js postcss.config.js
 ENV SQLITE=/app/temp.db
 RUN npm run build
 RUN rm /app/temp.db

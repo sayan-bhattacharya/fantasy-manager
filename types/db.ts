@@ -265,6 +265,75 @@ export interface Users {
   username: Generated<string>;
 }
 
+// ── Fantasy Football Revamp Tables ───────────────────────────────────────────
+
+export interface Wallet {
+  id: Generated<number>;
+  userId: number;
+  balance: Generated<number>;
+  currency: Generated<string>;
+  updatedAt: Generated<number>;
+}
+
+export interface Transactions {
+  id: Generated<number>;
+  userId: number;
+  amount: number;
+  type: string;
+  description: Generated<string>;
+  relatedId: number | null;
+  createdAt: Generated<number>;
+}
+
+export interface Contests {
+  id: Generated<number>;
+  name: string;
+  description: Generated<string>;
+  type: Generated<string>;
+  leagueType: Generated<string>;
+  entryFee: Generated<number>;
+  prizePool: Generated<number>;
+  maxEntries: Generated<number>;
+  currentEntries: Generated<number>;
+  matchday: Generated<number>;
+  status: Generated<string>;
+  createdBy: number | null;
+  inviteCode: string | null;
+  startTime: number | null;
+  endTime: number | null;
+  createdAt: Generated<number>;
+}
+
+export interface ContestEntries {
+  id: Generated<number>;
+  contestId: number;
+  userId: number;
+  teamName: Generated<string>;
+  score: Generated<number>;
+  rank: number | null;
+  prizeWon: Generated<number>;
+  enteredAt: Generated<number>;
+}
+
+export interface Achievements {
+  id: Generated<number>;
+  userId: number;
+  type: string;
+  title: string;
+  description: Generated<string>;
+  icon: Generated<string>;
+  rarity: Generated<string>;
+  earnedAt: Generated<number>;
+}
+
+export interface UserStreaks {
+  userId: number;
+  currentStreak: Generated<number>;
+  longestStreak: Generated<number>;
+  lastActiveDate: Generated<string>;
+  totalLogins: Generated<number>;
+}
+
 export interface DB {
   analytics: Analytics;
   announcements: Announcements;
@@ -289,4 +358,11 @@ export interface DB {
   squad: Squad;
   transfers: Transfers;
   users: Users;
+  // Fantasy Football Revamp
+  wallet: Wallet;
+  transactions: Transactions;
+  contests: Contests;
+  contestEntries: ContestEntries;
+  achievements: Achievements;
+  userStreaks: UserStreaks;
 }
