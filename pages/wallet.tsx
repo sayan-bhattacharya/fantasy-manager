@@ -33,7 +33,7 @@ const TX_COLORS: Record<string, string> = {
 };
 
 export default function WalletPage() {
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   const router = useRouter();
   const [data, setData] = useState<WalletData | null>(null);
   const [loading, setLoading] = useState(true);

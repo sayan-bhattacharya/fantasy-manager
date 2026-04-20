@@ -1,6 +1,7 @@
 import { GetStaticProps } from "next";
 import { signIn } from "next-auth/react";
 import Head from "next/head";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import { Providers, getProviders } from "../types/providers";
@@ -582,7 +583,7 @@ export default function SignIn({ enabledProviders }: Props) {
                     Sign up free
                   </a>
                 </p>
-                <a
+                <Link
                   href="/privacy"
                   style={{
                     fontSize: "0.72rem",
@@ -591,7 +592,7 @@ export default function SignIn({ enabledProviders }: Props) {
                   }}
                 >
                   Privacy
-                </a>
+                </Link>
               </div>
             </div>
           </div>

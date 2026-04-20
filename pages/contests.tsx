@@ -2,7 +2,6 @@ import Head from "next/head";
 import Menu from "../components/Menu";
 import { useEffect, useState, useCallback } from "react";
 import { useSession } from "next-auth/react";
-import Link from "next/link";
 
 interface Contest {
   id: number;
@@ -193,6 +192,7 @@ export default function ContestsPage() {
     setLoading(false);
   }, []);
 
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => {
     load(filter);
   }, [filter, load]);

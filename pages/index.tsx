@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 const LIVE_SCORES = [
   { home: "Arsenal", away: "Man City", score: "2–1", minute: "67'" },

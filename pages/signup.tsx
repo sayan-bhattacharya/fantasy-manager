@@ -1,6 +1,7 @@
 import { GetStaticProps } from "next";
 import { signIn } from "next-auth/react";
 import Head from "next/head";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import { Providers, getProviders } from "../types/providers";
@@ -439,7 +440,7 @@ export default function SignUp({
                           margin: "4px 0 0",
                         }}
                       >
-                        Passwords don't match
+                        Passwords don&apos;t match
                       </p>
                     )}
                   </div>
@@ -592,7 +593,7 @@ export default function SignUp({
                     Sign in
                   </a>
                 </p>
-                <a
+                <Link
                   href="/privacy"
                   style={{
                     fontSize: "0.72rem",
@@ -601,7 +602,7 @@ export default function SignUp({
                   }}
                 >
                   Privacy
-                </a>
+                </Link>
               </div>
             </div>
           </div>
