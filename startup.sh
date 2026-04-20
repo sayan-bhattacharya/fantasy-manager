@@ -27,7 +27,7 @@ fi
 # Azure Files CIFS symlink bug. Node_modules are a real dir here so it's fast.
 echo "[startup] Building Next.js app..."
 rm -rf .next
-NODE_ENV=production APP_ENV=production NEXT_TELEMETRY_DISABLED=1 \
+SQLITE=/tmp/build.db NODE_ENV=production APP_ENV=production NEXT_TELEMETRY_DISABLED=1 \
   ./node_modules/.bin/next build
 echo "[startup] Build complete."
 
