@@ -384,7 +384,7 @@ export default function AnimatedPitch() {
     // ── Draw utilities ──
     const ctx2 = canvas.getContext("2d")!;
 
-    const drawPitch = (sc: number) => {
+    const drawPitch = (_sc: number) => {
       // Background
       ctx2.fillStyle = "#050b05";
       ctx2.fillRect(0, 0, canvas.width, canvas.height);
@@ -434,7 +434,7 @@ export default function AnimatedPitch() {
       ctx2.restore();
     };
 
-    const drawPlayers = (sc: number) => {
+    const drawPlayers = (_sc: number) => {
       ctx2.save();
       ctx2.scale(canvas.width / S, canvas.height / S);
 

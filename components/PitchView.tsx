@@ -29,7 +29,7 @@ const FORMATION_ROWS: Record<string, number[]> = {
   "3-4-3": [1, 3, 4, 3],
 };
 
-const POS_LABELS: Record<string, string> = {
+const _POS_LABELS: Record<string, string> = {
   goalkeeper: "GK",
   defender: "DEF",
   midfielder: "MID",
@@ -153,7 +153,7 @@ export default function PitchView({
     posIdx++;
   });
 
-  const totalSlots = rows.reduce((a, b) => a + b, 0);
+  const _totalSlots = rows.reduce((a, b) => a + b, 0);
 
   return (
     <div
