@@ -59,7 +59,7 @@ jobs:
           node-version: 24.x
           cache: npm
 
-      - name: Install dependencies (include dev for ts-node runtime)
+      - name: Install dependencies
         run: npm ci
 
       - name: Build production app
@@ -69,28 +69,8 @@ jobs:
           SQLITE: /tmp/build.db
           NEXTAUTH_URL: https://fantasy-manager-app.azurewebsites.net
           NEXTAUTH_SECRET: ci-build-placeholder
+          NEXT_TELEMETRY_DISABLED: 1
         run: npm run build
-
-      - name: Remove build-only assets
-        run: |
-          rm -rf scripts/data scripts/data.ts 2>/dev/null || true
-          rm -f /tmp/build.db 2>/dev/null || true
-
-      - name: Create deployment zip
-        run: |
-          zip -r deploy.zip . \
-            -x ".git/*" \
-            -x ".github/*" \
-            -x "cypress/*" \
-            -x "pages/*" \
-            -x "components/*" \
-            -x "styles/*" \
-            -x "node_modules/.cache/*" \
-            -x ".next/cache/*" \
-            -x "*.db" -x "*.db-shm" -x "*.db-wal" \
-            -x "deploy.zip" \
-            -x "*.test.ts" -x "*.spec.ts"
-          echo "Zip size: $(du -sh deploy.zip | cut -f1)"
 
       - name: Azure Login (OIDC)
         uses: azure/login@v2
@@ -99,14 +79,55 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
+      - name: Create deployment zip (includes node_modules + .next)
+        run: |
+          zip -r deploy.zip . \
+            -x ".git/*" \
+            -x ".github/*" \
+            -x "cypress/*" \
+            -x "sample/*" \
+            -x "node_modules/.cache/*" \
+            -x ".next/cache/*" \
+            -x ".next/trace*" \
+            -x "scripts/data/*" \
+            -x "*.db" -x "*.db-shm" -x "*.db-wal" \
+            -x "deploy.zip" \
+            -x "make_zip.py" \
+            -x ".env.local" \
+            -x ".env.test.local" \
+            -x "*.test.ts" -x "*.spec.ts"
+          echo "Zip size: $(du -sh deploy.zip | cut -f1)"
+
+      - name: Upload zip to blob storage
+        run: |
+          BLOB="deploy-${{ github.sha }}.zip"
+          az storage blob upload \
+            --account-name stfantasymanagerdeploy \
+            --container-name deploys \
+            --name "$BLOB" \
+            --file deploy.zip \
+            --overwrite \
+            --auth-mode login
+          EXPIRY=$(date -u -d '+2 hours' '+%Y-%m-%dT%H:%MZ')
+          SAS=$(az storage blob generate-sas \
+            --account-name stfantasymanagerdeploy \
+            --container-name deploys \
+            --name "$BLOB" \
+            --permissions r \
+            --expiry "$EXPIRY" \
+            --auth-mode login \
+            --as-user \
+            --output tsv)
+          echo "DEPLOY_URL=https://stfantasymanagerdeploy.blob.core.windows.net/deploys/${BLOB}?${SAS}" >> "$GITHUB_ENV"
+
       - name: Deploy to Azure App Service
         run: |
           az webapp deploy \
             --resource-group rg-fantasy-manager \
             --name fantasy-manager-app \
-            --src-path deploy.zip \
+            --src-url "$DEPLOY_URL" \
             --type zip \
-            --timeout 600
+            --async true
 
       - name: Verify deployment
         run: |
