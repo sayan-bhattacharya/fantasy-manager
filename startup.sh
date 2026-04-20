@@ -28,7 +28,7 @@ fi
 echo "[startup] Building Next.js app..."
 rm -rf .next
 NODE_ENV=production APP_ENV=production NEXT_TELEMETRY_DISABLED=1 \
-  ./node_modules/.bin/next build --no-turbopack
+  ./node_modules/.bin/next build
 echo "[startup] Build complete."
 
 exec npm run start:no-build
