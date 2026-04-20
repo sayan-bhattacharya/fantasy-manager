@@ -57,12 +57,10 @@ export default async function handler(
     .execute()
     .catch(() => null);
 
-  return res
-    .status(200)
-    .json({
-      success: true,
-      userId: user.id,
-      username: user.username,
-      balance: targetBalance,
-    });
+  return res.status(200).json({
+    success: true,
+    userId: user.id,
+    username: user.username,
+    balance: targetBalance,
+  });
 }
