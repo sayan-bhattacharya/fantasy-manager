@@ -105,8 +105,7 @@ jobs:
             --name fantasy-manager-app \
             --src-path deploy.zip \
             --type zip \
-            --async true \
-            --no-wait
+            --async true
 
       - name: Verify deployment
         run: |
