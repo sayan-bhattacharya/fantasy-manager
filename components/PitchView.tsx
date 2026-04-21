@@ -29,13 +29,6 @@ const FORMATION_ROWS: Record<string, number[]> = {
   "3-4-3": [1, 3, 4, 3],
 };
 
-const _POS_LABELS: Record<string, string> = {
-  goalkeeper: "GK",
-  defender: "DEF",
-  midfielder: "MID",
-  forward: "FWD",
-  unknown: "?",
-};
 
 const POS_COLORS: Record<string, { bg: string; border: string }> = {
   goalkeeper: { bg: "rgba(251,191,36,0.2)", border: "#FBBF24" },
@@ -152,8 +145,6 @@ export default function PitchView({
     byPos[rowIdx] = group.slice(0, count);
     posIdx++;
   });
-
-  const _totalSlots = rows.reduce((a, b) => a + b, 0);
 
   return (
     <div
