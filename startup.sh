@@ -27,6 +27,7 @@ else
 fi
 
 ln -sfn "$NPM_HOME/node_modules" node_modules
+export PATH="$NPM_HOME/node_modules/.bin:$PATH"
 
 # ── .next build ───────────────────────────────────────────────────────────────
 # CI ships a pre-built .next — skip build when BUILD_ID is present.
