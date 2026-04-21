@@ -29,7 +29,6 @@ const FORMATION_ROWS: Record<string, number[]> = {
   "3-4-3": [1, 3, 4, 3],
 };
 
-
 const POS_COLORS: Record<string, { bg: string; border: string }> = {
   goalkeeper: { bg: "rgba(251,191,36,0.2)", border: "#FBBF24" },
   defender: { bg: "rgba(59,130,246,0.2)", border: "#3B82F6" },
