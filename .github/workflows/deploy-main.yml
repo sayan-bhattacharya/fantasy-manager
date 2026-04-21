@@ -62,6 +62,16 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Build production app
+        env:
+          NODE_ENV: production
+          APP_ENV: production
+          SQLITE: /tmp/build.db
+          NEXTAUTH_URL: https://fantasy-manager-app.azurewebsites.net
+          NEXTAUTH_SECRET: ci-build-placeholder
+          NEXT_TELEMETRY_DISABLED: 1
+        run: npm run build
+
       - name: Azure Login (OIDC)
         uses: azure/login@v2
         with:
@@ -69,15 +79,16 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      - name: Create deployment zip (source only — startup.sh builds on server)
+      - name: Create deployment zip (includes node_modules + .next for fast startup)
         run: |
           zip -r deploy.zip . \
             -x ".git/*" \
             -x ".github/*" \
             -x "cypress/*" \
             -x "sample/*" \
-            -x "node_modules/*" \
-            -x ".next/*" \
+            -x "node_modules/.cache/*" \
+            -x ".next/cache/*" \
+            -x ".next/trace*" \
             -x "scripts/data/*" \
             -x "*.db" -x "*.db-shm" -x "*.db-wal" \
             -x "deploy.zip" \
@@ -94,7 +105,8 @@ jobs:
             --name fantasy-manager-app \
             --src-path deploy.zip \
             --type zip \
-            --async true
+            --async true \
+            --no-wait
 
       - name: Verify deployment
         run: |
