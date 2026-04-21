@@ -123,6 +123,7 @@ export default function PlayerAvatar({
         }}
       >
         {showPhoto ? (
+          // eslint-disable-next-line @next/next/no-img-element
           <img
             src={`/api/picture/${pictureID}`}
             alt={name}
