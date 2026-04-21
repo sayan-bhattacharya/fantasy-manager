@@ -9,6 +9,17 @@ export type Generated<T> = T extends ColumnType<infer S, infer I, infer U>
   ? ColumnType<S, I | undefined, U>
   : ColumnType<T, T | undefined, T>;
 
+export interface Achievements {
+  description: Generated<string>;
+  earnedAt: Generated<number>;
+  icon: Generated<string>;
+  id: Generated<number>;
+  rarity: Generated<string>;
+  title: string;
+  type: string;
+  userId: number;
+}
+
 export interface Analytics {
   day: Generated<number>;
   leagueActive: string;
@@ -39,6 +50,36 @@ export interface Clubs {
   opponent: string | null;
   opponentScore: number | null;
   teamScore: number | null;
+}
+
+export interface ContestEntries {
+  contestId: number;
+  enteredAt: Generated<number>;
+  id: Generated<number>;
+  prizeWon: Generated<number>;
+  rank: number | null;
+  score: Generated<number>;
+  teamName: Generated<string>;
+  userId: number;
+}
+
+export interface Contests {
+  createdAt: Generated<number>;
+  createdBy: number | null;
+  currentEntries: Generated<number>;
+  description: Generated<string>;
+  endTime: number | null;
+  entryFee: Generated<number>;
+  id: Generated<number>;
+  inviteCode: string | null;
+  leagueType: Generated<string>;
+  matchday: Generated<number>;
+  maxEntries: Generated<number>;
+  name: string;
+  prizePool: Generated<number>;
+  startTime: number | null;
+  status: Generated<string>;
+  type: Generated<string>;
 }
 
 export interface Data {
@@ -239,6 +280,16 @@ export interface Squad {
   user: number;
 }
 
+export interface Transactions {
+  amount: number;
+  createdAt: Generated<number>;
+  description: Generated<string>;
+  id: Generated<number>;
+  relatedId: number | null;
+  type: string;
+  userId: number;
+}
+
 export interface Transfers {
   buyer: number;
   leagueID: number;
@@ -265,79 +316,29 @@ export interface Users {
   username: Generated<string>;
 }
 
-// ── Fantasy Football Revamp Tables ───────────────────────────────────────────
+export interface UserStreaks {
+  currentStreak: Generated<number>;
+  lastActiveDate: Generated<string>;
+  longestStreak: Generated<number>;
+  totalLogins: Generated<number>;
+  userId: Generated<number>;
+}
 
 export interface Wallet {
-  id: Generated<number>;
-  userId: number;
   balance: Generated<number>;
   currency: Generated<string>;
+  id: Generated<number>;
   updatedAt: Generated<number>;
-}
-
-export interface Transactions {
-  id: Generated<number>;
   userId: number;
-  amount: number;
-  type: string;
-  description: Generated<string>;
-  relatedId: number | null;
-  createdAt: Generated<number>;
-}
-
-export interface Contests {
-  id: Generated<number>;
-  name: string;
-  description: Generated<string>;
-  type: Generated<string>;
-  leagueType: Generated<string>;
-  entryFee: Generated<number>;
-  prizePool: Generated<number>;
-  maxEntries: Generated<number>;
-  currentEntries: Generated<number>;
-  matchday: Generated<number>;
-  status: Generated<string>;
-  createdBy: number | null;
-  inviteCode: string | null;
-  startTime: number | null;
-  endTime: number | null;
-  createdAt: Generated<number>;
-}
-
-export interface ContestEntries {
-  id: Generated<number>;
-  contestId: number;
-  userId: number;
-  teamName: Generated<string>;
-  score: Generated<number>;
-  rank: number | null;
-  prizeWon: Generated<number>;
-  enteredAt: Generated<number>;
-}
-
-export interface Achievements {
-  id: Generated<number>;
-  userId: number;
-  type: string;
-  title: string;
-  description: Generated<string>;
-  icon: Generated<string>;
-  rarity: Generated<string>;
-  earnedAt: Generated<number>;
-}
-
-export interface UserStreaks {
-  userId: number;
-  currentStreak: Generated<number>;
-  longestStreak: Generated<number>;
-  lastActiveDate: Generated<string>;
-  totalLogins: Generated<number>;
 }
 
 export interface DB {
+  achievements: Achievements;
   analytics: Analytics;
   announcements: Announcements;
   clubs: Clubs;
+  contestEntries: ContestEntries;
+  contests: Contests;
   data: Data;
   detailedAnalytics: DetailedAnalytics;
   futureClubs: FutureClubs;
@@ -356,13 +357,9 @@ export interface DB {
   points: Points;
   predictions: Predictions;
   squad: Squad;
+  transactions: Transactions;
   transfers: Transfers;
   users: Users;
-  // Fantasy Football Revamp
-  wallet: Wallet;
-  transactions: Transactions;
-  contests: Contests;
-  contestEntries: ContestEntries;
-  achievements: Achievements;
   userStreaks: UserStreaks;
+  wallet: Wallet;
 }
