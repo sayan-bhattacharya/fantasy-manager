@@ -2,6 +2,9 @@
 set -e
 cd /home/site/wwwroot
 
+# Never let a leftover local env file override Azure App Settings
+rm -f .env.local .env.test.local
+
 LOCKSUM=$(md5sum package-lock.json | cut -d' ' -f1)
 NPM_MARKER="/home/.install_marker"
 
